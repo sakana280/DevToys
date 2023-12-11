@@ -110,6 +110,8 @@
     <Compile Include="ViewModels\Tools\Converters\ConvertersGroupToolProvider.cs" />
     <Compile Include="ViewModels\Tools\Converters\CronParser\CronParserToolProvider.cs" />
     <Compile Include="ViewModels\Tools\Converters\CronParser\CronParserToolViewModel.cs" />
+    <Compile Include="ViewModels\Tools\Converters\JsonTable\JsonTableToolProvider.cs" />
+    <Compile Include="ViewModels\Tools\Converters\JsonTable\JsonTableToolViewModel.cs" />
     <Compile Include="ViewModels\Tools\Converters\NumberBaseConverter\AdvancedNumberBaseConverterControlViewModel.cs" />
     <Compile Include="ViewModels\Tools\Converters\NumberBaseConverter\BasicNumberBaseConverterControlViewModel.cs" />
     <Compile Include="ViewModels\Tools\Converters\NumberBaseConverter\Exceptions\InvalidBaseNumberException.cs" />
@@ -184,6 +186,9 @@
     </Compile>
     <Compile Include="Views\Tools\Converters\CronParser\CronParserToolPage.xaml.cs">
       <DependentUpon>CronParserToolPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tools\Converters\JsonTable\JsonTableToolPage.xaml.cs">
+      <DependentUpon>JsonTableToolPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tools\Converters\NumberBaseConverter\AdvancedNumberBaseConverterControl.xaml.cs">
       <DependentUpon>AdvancedNumberBaseConverterControl.xaml</DependentUpon>
@@ -592,6 +597,10 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Page Include="Views\Tools\Converters\JsonTable\JsonTableToolPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Tools\EncodersDecoders\CertificateEncoderDecoder\CertificateEncoderDecoderToolPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

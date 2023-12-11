@@ -39,6 +39,7 @@ namespace DevToys
         private readonly HtmlEncoderDecoderStrings _htmlencoderdecoder = new HtmlEncoderDecoderStrings();
         private readonly ImageConverterStrings _imageconverter = new ImageConverterStrings();
         private readonly JsonFormatterStrings _jsonformatter = new JsonFormatterStrings();
+        private readonly JsonTableStrings _jsontable = new JsonTableStrings();
         private readonly JsonYamlStrings _jsonyaml = new JsonYamlStrings();
         private readonly JwtDecoderEncoderStrings _jwtdecoderencoder = new JwtDecoderEncoderStrings();
         private readonly LoremIpsumGeneratorStrings _loremipsumgenerator = new LoremIpsumGeneratorStrings();
@@ -144,6 +145,11 @@ namespace DevToys
         /// Gets the <see cref="JsonFormatterStrings"/>.
         /// </summary>
         public JsonFormatterStrings JsonFormatter => _jsonformatter;
+
+        /// <summary>
+        /// Gets the <see cref="JsonTableStrings"/>.
+        /// </summary>
+        public JsonTableStrings JsonTable => _jsontable;
 
         /// <summary>
         /// Gets the <see cref="JsonYamlStrings"/>.
@@ -1579,6 +1585,76 @@ namespace DevToys
         public string SortProperties => _resources.GetString("SortProperties");
     }
 
+    public class JsonTableStrings : ObservableObject
+    {
+        private readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse("JsonTable");
+
+        /// <summary>
+        /// Gets the resource AccessibleName.
+        /// </summary>
+        public string AccessibleName => _resources.GetString("AccessibleName");
+
+        /// <summary>
+        /// Gets the resource SearchDisplayName.
+        /// </summary>
+        public string SearchDisplayName => _resources.GetString("SearchDisplayName");
+
+        /// <summary>
+        /// Gets the resource Description.
+        /// </summary>
+        public string Description => _resources.GetString("Description");
+
+        /// <summary>
+        /// Gets the resource MenuDisplayName.
+        /// </summary>
+        public string MenuDisplayName => _resources.GetString("MenuDisplayName");
+
+        /// <summary>
+        /// Gets the resource SearchKeywords.
+        /// </summary>
+        public string SearchKeywords => _resources.GetString("SearchKeywords");
+
+        /// <summary>
+        /// Gets the resource Configuration.
+        /// </summary>
+        public string Configuration => _resources.GetString("Configuration");
+
+        /// <summary>
+        /// Gets the resource Input.
+        /// </summary>
+        public string Input => _resources.GetString("Input");
+
+        /// <summary>
+        /// Gets the resource Output.
+        /// </summary>
+        public string Output => _resources.GetString("Output");
+
+        /// <summary>
+        /// Gets the resource JsonError.
+        /// </summary>
+        public string JsonError => _resources.GetString("JsonError");
+
+        /// <summary>
+        /// Gets the resource ClipboardFormatDescription.
+        /// </summary>
+        public string ClipboardFormatDescription => _resources.GetString("ClipboardFormatDescription");
+
+        /// <summary>
+        /// Gets the resource ClipboardFormatHeading.
+        /// </summary>
+        public string ClipboardFormatHeading => _resources.GetString("ClipboardFormatHeading");
+
+        /// <summary>
+        /// Gets the resource CopyFormatCSV.
+        /// </summary>
+        public string CopyFormatCSV => _resources.GetString("CopyFormatCSV");
+
+        /// <summary>
+        /// Gets the resource CopyFormatTSV.
+        /// </summary>
+        public string CopyFormatTSV => _resources.GetString("CopyFormatTSV");
+    }
+
     public class JsonYamlStrings : ObservableObject
     {
         private readonly ResourceLoader _resources = ResourceLoader.GetForViewIndependentUse("JsonYaml");
@@ -2604,7 +2680,7 @@ namespace DevToys
         /// Gets the resource SpecialCharacters.
         /// </summary>
         public string SpecialCharacters => _resources.GetString("SpecialCharacters");
-        
+
         /// <summary>
         /// Gets the resource ExcludeCharacters.
         /// </summary>

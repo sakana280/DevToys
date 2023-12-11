@@ -14,7 +14,7 @@ namespace DevToys.ViewModels.Tools.NumberBaseConverter
     [Name("Number Base Converter")]
     [Parent(ConvertersGroupToolProvider.InternalName)]
     [ProtocolName("baseconverter")]
-    [Order(1)]
+    [Order(3)]
     [CompactOverlaySize(width: 400, height: 500)]
     internal sealed class NumberBaseConverterToolProvider : IToolProvider
     {
