@@ -219,28 +219,31 @@ namespace DevToys.ViewModels.Tools.JsonTable
 
         private ConvertResult ConvertFromJson(string? text)
         {
-            JsonArrayAsDicts? jsonArray = ParseJsonArray(text);
-            if (jsonArray == null)
+            JObject[]? array = ParseJsonArray(text);
+            if (array == null)
             {
                 return new(new(), "", LanguageManager.Instance.JsonTable.JsonError);
             }
 
-            //todo flatten nested objects (_ delimited), remove nested lists
+            JObject[] flattened = array.Select(o => FlattenJsonObject(o)).ToArray();
 
-            var properties = jsonArray.SelectMany(o => o.Keys).Distinct().ToList();
-
-            char separator = CopyFormatMode == CopyFormatItem.TSV.ToString() ? '\t' : ',';
+            var properties = flattened
+                .SelectMany(o => o.Properties())
+                .Select(p => p.Name)
+                .Distinct()
+                .ToList();
 
             var table = new DataTable();
             table.Columns.AddRange(properties.Select(p => new DataColumn(p)).ToArray());
 
+            char separator = CopyFormatMode == CopyFormatItem.TSV.ToString() ? '\t' : ',';
             var clipboard = new StringBuilder();
             clipboard.AppendLine(string.Join(separator, properties));
 
-            foreach (JsonAsDict jsonObject in jsonArray)
+            foreach (JObject obj in flattened)
             {
                 string?[] values = properties
-                    .Select(p => jsonObject.FirstOrDefault(kv => kv.Key == p).Value?.ToString())
+                    .Select(p => obj[p]?.ToString()) // JObject indexer conveniently returns null for unknown properties
                     .ToArray();
 
                 table.Rows.Add(values);
@@ -264,24 +267,51 @@ namespace DevToys.ViewModels.Tools.JsonTable
             public string? Error { get; }
         }
 
-        private class JsonAsDict : Dictionary<string, object> { }
-        private class JsonArrayAsDicts : List<JsonAsDict> { }
-
-        private static JsonArrayAsDicts? ParseJsonArray(string? text)
+        /// <summary>
+        /// Parse the text to an array of JObject, or null if the text does not represent a JSON array of objects.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        private static JObject[]? ParseJsonArray(string? text)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(text) || JToken.Parse(text!) is not JArray)
-                {
-                    return null;
-                }
-
-                return JsonConvert.DeserializeObject<JsonArrayAsDicts>(text!)!;
+                // Coalesce to empty string to prevent ArgumentNullException (returns null instead).
+                var array = JsonConvert.DeserializeObject(text ?? "") as JArray;
+                return array.Cast<JObject>().ToArray();
             }
             catch (JsonReaderException)
             {
                 return null;
             }
+            catch (InvalidCastException)
+            {
+                return null;
+            }
+        }
+
+        private static JObject FlattenJsonObject(JObject json)
+        {
+            var flattened = new JObject();
+
+            foreach (KeyValuePair<string, JToken?> kv in json)
+            {
+                if (kv.Value is JObject jobj)
+                {
+                    // Flatten objects by prefixing their property names with the parent property name, underscore separated.
+                    foreach (KeyValuePair<string, JToken?> kv2 in FlattenJsonObject(jobj))
+                    {
+                        flattened.Add($"{kv.Key}_{kv2.Key}", kv2.Value);
+                    }
+                }
+                else if (kv.Value is JValue)
+                {
+                    flattened[kv.Key] = kv.Value;
+                }
+                // else strip out any array values
+            }
+
+            return flattened;
         }
     }
 }
