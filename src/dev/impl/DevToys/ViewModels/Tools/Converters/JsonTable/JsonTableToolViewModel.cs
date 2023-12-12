@@ -233,6 +233,11 @@ namespace DevToys.ViewModels.Tools.JsonTable
                 .Distinct()
                 .ToList();
 
+            if (properties.Count == 0)
+            {
+                return new(new(), "", LanguageManager.Instance.JsonTable.JsonError);
+            }
+
             var table = new DataTable();
             table.Columns.AddRange(properties.Select(p => new DataColumn(p)).ToArray());
 
