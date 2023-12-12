@@ -36,6 +36,7 @@
     <Compile Include="Helpers\JsonYaml\Core\BooleanYamlTypeResolver.cs" />
     <Compile Include="Helpers\StorageFileHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
+    <Compile Include="Helpers\JsonTableHelper.cs" />
     <Compile Include="Helpers\ColorBlindnessSimulatorHelper.cs" />
     <Compile Include="Helpers\HashingHelper.cs" />
     <Compile Include="Helpers\NumberBaseHelper.cs" />

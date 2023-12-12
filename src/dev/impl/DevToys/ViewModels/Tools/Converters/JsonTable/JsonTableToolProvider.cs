@@ -1,10 +1,9 @@
 ﻿#nullable enable
 
-using System;
 using System.Composition;
 using DevToys.Api.Tools;
+using DevToys.Helpers;
 using DevToys.Shared.Api.Core;
-using Newtonsoft.Json.Linq;
 
 namespace DevToys.ViewModels.Tools.JsonTable
 {
@@ -38,16 +37,7 @@ namespace DevToys.ViewModels.Tools.JsonTable
 
         public bool CanBeTreatedByTool(string data)
         {
-            try
-            {
-                var jtoken = JToken.Parse(data ?? "");
-                return jtoken is JArray;
-            }
-            catch (Exception)
-            {
-                // Exception in parsing json. It likely mean the text isn't a JSON.
-                return false;
-            }
+            return JsonTableHelper.IsValid(data);
         }
 
         public IToolViewModel CreateTool()

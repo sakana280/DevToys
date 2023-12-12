@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\CertificateHelperTests.cs" />
+    <Compile Include="Helpers\JsonTableHelperTests.cs" />
     <Compile Include="Helpers\JwtHelperTests.cs" />
     <Compile Include="Helpers\Base64HelperTests.cs" />
     <Compile Include="Helpers\UrlHelperTests.cs" />

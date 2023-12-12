@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DevToys.Api.Core;
 using DevToys.Api.Core.Settings;
@@ -16,8 +14,8 @@ using DevToys.Shared.Core.Threading;
 using DevToys.Views.Tools.JsonTable;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.DataTransfer;
+using static DevToys.Helpers.JsonTableHelper;
 using Clipboard = Windows.ApplicationModel.DataTransfer.Clipboard;
 
 namespace DevToys.ViewModels.Tools.JsonTable
@@ -195,7 +193,8 @@ namespace DevToys.ViewModels.Tools.JsonTable
 
                 while (_conversionQueue.TryDequeue(out string? text))
                 {
-                    ConvertResult result = ConvertFromJson(text);
+                    char separator = CopyFormatMode == CopyFormatItem.TSV.ToString() ? '\t' : ',';
+                    ConvertResult result = ConvertFromJson(text, separator);
 
                     ThreadHelper.RunOnUIThreadAsync(ThreadPriority.Low, () =>
                     {
@@ -215,108 +214,6 @@ namespace DevToys.ViewModels.Tools.JsonTable
             {
                 _conversionInProgress = false;
             }
-        }
-
-        private ConvertResult ConvertFromJson(string? text)
-        {
-            JObject[]? array = ParseJsonArray(text);
-            if (array == null)
-            {
-                return new(new(), "", LanguageManager.Instance.JsonTable.JsonError);
-            }
-
-            JObject[] flattened = array.Select(o => FlattenJsonObject(o)).ToArray();
-
-            var properties = flattened
-                .SelectMany(o => o.Properties())
-                .Select(p => p.Name)
-                .Distinct()
-                .ToList();
-
-            if (properties.Count == 0)
-            {
-                return new(new(), "", LanguageManager.Instance.JsonTable.JsonError);
-            }
-
-            var table = new DataTable();
-            table.Columns.AddRange(properties.Select(p => new DataColumn(p)).ToArray());
-
-            char separator = CopyFormatMode == CopyFormatItem.TSV.ToString() ? '\t' : ',';
-            var clipboard = new StringBuilder();
-            clipboard.AppendLine(string.Join(separator, properties));
-
-            foreach (JObject obj in flattened)
-            {
-                string?[] values = properties
-                    .Select(p => obj[p]?.ToString()) // JObject indexer conveniently returns null for unknown properties
-                    .ToArray();
-
-                table.Rows.Add(values);
-                clipboard.AppendLine(string.Join(separator, values));
-            }
-
-            return new(table, clipboard.ToString(), null);
-        }
-
-        private class ConvertResult
-        {
-            public ConvertResult(DataTable data, string text, string? error)
-            {
-                Data = data;
-                Text = text;
-                Error = error;
-            }
-
-            public DataTable Data { get; }
-            public string Text { get; }
-            public string? Error { get; }
-        }
-
-        /// <summary>
-        /// Parse the text to an array of JObject, or null if the text does not represent a JSON array of objects.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        private static JObject[]? ParseJsonArray(string? text)
-        {
-            try
-            {
-                // Coalesce to empty string to prevent ArgumentNullException (returns null instead).
-                var array = JsonConvert.DeserializeObject(text ?? "") as JArray;
-                return array.Cast<JObject>().ToArray();
-            }
-            catch (JsonReaderException)
-            {
-                return null;
-            }
-            catch (InvalidCastException)
-            {
-                return null;
-            }
-        }
-
-        private static JObject FlattenJsonObject(JObject json)
-        {
-            var flattened = new JObject();
-
-            foreach (KeyValuePair<string, JToken?> kv in json)
-            {
-                if (kv.Value is JObject jobj)
-                {
-                    // Flatten objects by prefixing their property names with the parent property name, underscore separated.
-                    foreach (KeyValuePair<string, JToken?> kv2 in FlattenJsonObject(jobj))
-                    {
-                        flattened.Add($"{kv.Key}_{kv2.Key}", kv2.Value);
-                    }
-                }
-                else if (kv.Value is JValue)
-                {
-                    flattened[kv.Key] = kv.Value;
-                }
-                // else strip out any array values
-            }
-
-            return flattened;
         }
     }
 }
