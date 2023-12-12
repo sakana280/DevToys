@@ -145,7 +145,7 @@
     <value>Output</value>
   </data>
   <data name="JsonError" xml:space="preserve">
-    <value>Please provide a JSON array of objects</value>
+    <value>Please provide a valid JSON array of objects</value>
     <comment>Displayed when input isn't a valid JSON array</comment>
   </data>
   <data name="ClipboardFormatDescription" xml:space="preserve">

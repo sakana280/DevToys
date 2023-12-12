@@ -6,13 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:DevToys.UI.Controls"
     xmlns:converters="using:DevToys.UI.Converters"
-    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:ex="using:DevToys.UI.Extensions"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:ex="using:DevToys.UI.Extensions" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     NavigationCacheMode="Required">
 
     <Page.Resources>
-        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" IsInverted="False"/>
-        <converters:NullToVisibilityConverter x:Key="InvertedNullToVisibilityConverter" IsInverted="True"/>
+        <converters:NullToBooleanConverter x:Key="InvertedNullToBooleanConverter" IsInverted="True"/>
     </Page.Resources>
 
     <Grid Margin="0,0,0,16" RowSpacing="12">
@@ -55,6 +54,14 @@
             <StackPanel
                 Grid.Row="0"
                 Spacing="4">
+
+                <muxc:InfoBar
+                    x:Name="ErrorMessage"
+                    Severity="Warning"
+                    Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                    IsOpen="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource InvertedNullToBooleanConverter}}"
+                    IsClosable="False"/>
+
                 <TextBlock x:Name="ConfigurationSubtitle" Style="{StaticResource SubTitleTextBlock}" Text="{x:Bind ViewModel.Strings.Configuration}" />
 
                 <controls:ExpandableSettingControl
@@ -182,18 +189,7 @@
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         x:Name="OutputDataGrid"
-                        Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}"
                         AutoGenerateColumns="False"/>
-                    <TextBlock
-                        x:Name="ErrorMessage"
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource InvertedNullToVisibilityConverter}}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsTextSelectionEnabled="True"/>
                 </Grid>
             </Grid>
         </Grid>
