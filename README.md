@@ -143,6 +143,7 @@ Here is the list of tool name you can use:
 - `sqlformat` - SQL Formatter
 - `xmlformat` - XML Formatter
 - `jsonyaml` - Json <> Yaml
+- `jsontable` - Json > Table
 - `jwt` - JWT Decoder
 - `colorblind` - Color Blindness Simulator
 - `color` - Color Picker & Contrast
