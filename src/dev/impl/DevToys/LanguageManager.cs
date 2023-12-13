@@ -1653,6 +1653,11 @@ namespace DevToys
         /// Gets the resource CopyFormatTSV.
         /// </summary>
         public string CopyFormatTSV => _resources.GetString("CopyFormatTSV");
+
+        /// <summary>
+        /// Gets the resource ClipboardFormatOptions.
+        /// </summary>
+        public string ClipboardFormatOptions => _resources.GetString("ClipboardFormatOptions");
     }
 
     public class JsonYamlStrings : ObservableObject

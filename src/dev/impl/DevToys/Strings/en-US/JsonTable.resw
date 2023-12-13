@@ -160,4 +160,8 @@
   <data name="CopyFormatTSV" xml:space="preserve">
     <value>Tab separated values</value>
   </data>
+  <data name="ClipboardFormatOptions" xml:space="preserve">
+    <value>Clipboard format options</value>
+    <comment>Accessible name for the CSV/TSV combobox</comment>
+  </data>
 </root>

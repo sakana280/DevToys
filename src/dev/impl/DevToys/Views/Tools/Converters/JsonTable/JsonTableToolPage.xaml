@@ -72,6 +72,7 @@
                         <FontIcon Glyph="&#xf7ed;" />
                     </controls:ExpandableSettingControl.Icon>
                     <ComboBox
+                        AutomationProperties.Name="{x:Bind ViewModel.Strings.ClipboardFormatOptions}"
                         ItemsSource="{x:Bind ViewModel.CopyFormatItems}"
                         DisplayMemberPath="DisplayName"
                         SelectedValuePath="Tag"
